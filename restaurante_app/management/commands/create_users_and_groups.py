@@ -14,7 +14,7 @@ class Command(BaseCommand):
         funcionario_password = config('FUNCIONARIO_PASSWORD')
         superuser_password = config('SUPERUSER_PASSWORD')
 
-        gerente_group, created = Group.objects.get_or_create(name='gerente')
+        gerente_group, _ = Group.objects.get_or_create(name='gerente')
 
         permissions = Permission.objects.filter(
             content_type__in=[
@@ -28,7 +28,7 @@ class Command(BaseCommand):
         )
         gerente_group.permissions.set(permissions)
 
-        funcionario_group, created = Group.objects.get_or_create(name='funcionario')
+        funcionario_group, _ = Group.objects.get_or_create(name='funcionario')
 
         funcionario_group.permissions.set(
             Permission.objects.filter(
@@ -85,12 +85,11 @@ class Command(BaseCommand):
 
     def populate_initial_data(self):
         sql_files = [
-            'restaurante_app/sql/populate_prato.sql',
-            'restaurante_app/sql/populate_clientes.sql',
-            'restaurante_app/sql/populate_fornecedor.sql'
-            'restaurante_app/sql/populate_ingredientes.sql'
-            'restaurante_app/sql/populate_usos.sql'
-            'restaurante_app/sql/populate_venda.sql'
+            'restaurante_app/sql/insert_clientes.sql',
+            'restaurante_app/sql/insert_fornecedor.sql',
+            'restaurante_app/sql/insert_ingredientes.sql',
+            'restaurante_app/sql/insert_pratos.sql',
+            'restaurante_app/sql/populate_usos.sql',
         ]
         
         with connection.cursor() as cursor:
