@@ -1,0 +1,7 @@
+__pycache__
+migrations
+pyvenv.cfg
+.env
+appDjango
+.DS_Store
+.venv
