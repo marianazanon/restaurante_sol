@@ -23,7 +23,12 @@ class Cliente(models.Model):
     
     def __str__(self):
         return self.nome
-    
+
+    def adicionar_pontos(self, valor):
+        pontos_adicionados = int(valor // 10)
+        self.pontos += pontos_adicionados
+        self.save()
+        return pontos_adicionados    
 
 class Prato(models.Model):
     
@@ -70,7 +75,7 @@ class Ingredientes(models.Model):
         constraints = [
             models.CheckConstraint(
                 name='check_validade_after_fabricacao',
-                check=Q(data_validade__gt=F('data_fabricacao')),
+                check=Q(data_validade__gt=models.F('data_fabricacao')),
                 violation_error_message='Data de fabricação não pode ser maior que a data de validade.'
             )
         ]
@@ -118,3 +123,5 @@ class Venda(models.Model):
 @receiver(pre_save, sender=Venda)
 def calculate_valor(sender, instance, **kwargs):
     instance.valor = instance.prato.valor * instance.quantidade
+    pontos = instance.cliente.adicionar_pontos(instance.valor)
+    print(f"Cliente {instance.cliente.nome} ganhou {pontos} pontos na compra de {instance.prato.nome}.")
