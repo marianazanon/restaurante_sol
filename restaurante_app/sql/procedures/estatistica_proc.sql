@@ -55,6 +55,4 @@ BEGIN
     GROUP BY month
     ORDER BY sales ASC
     LIMIT 1;
-END //
-
-DELIMITER ;
+END
