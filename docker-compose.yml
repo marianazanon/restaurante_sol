@@ -1,2 +1,49 @@
+services:
+  db:
+    image: mysql:8.0
+    command: --log-bin-trust-function-creators=1
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
 
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:9000 gerenciador_de_vendas.wsgi:application
+    volumes:
+      - static_volume:/app/web/staticfiles
+    ports:
+      - "8000:9000"
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+      DB_PORT: 3306
+      GERENTE_PASSWORD: ${GERENTE_PASSWORD}
+      FUNCIONARIO_PASSWORD: ${FUNCIONARIO_PASSWORD}
+      SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD}
 
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/app/web/staticfiles
+    ports:
+      - "1337:80"
+    depends_on:
+      - web
+  
+volumes:
+  mysql_data:
+  static_volume:
