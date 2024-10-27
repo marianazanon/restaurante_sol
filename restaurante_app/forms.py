@@ -1,4 +1,5 @@
 from django import forms
+from django.db import connection
 from .models import Venda, Reajuste, Sorteio
 
 class VendaForm(forms.ModelForm):
@@ -9,7 +10,7 @@ class VendaForm(forms.ModelForm):
 class ReajusteForm(forms.ModelForm):
     class Meta:
         model = Reajuste
-        fields = ['pct_reajuste', 'cargo']
+        fields = ['pct_reajuste', 'prato']
 
     def save(self, commit=True):
         pct_reajuste = self.cleaned_data.get('pct_reajuste')

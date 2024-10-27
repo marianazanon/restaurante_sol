@@ -100,10 +100,10 @@ class EventLog_Message(models.Model):
 
 class Reajuste(models.Model):
     pct_reajuste = models.DecimalField(max_digits=5, decimal_places=2)
-    cargo = models.CharField(max_length=100)
+    prato = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Reajuste {self.pct_reajuste}% for {self.cargo}"
+        return f"Reajuste {self.pct_reajuste}% for {self.prato}"
 
 class Sorteio(models.Model):
     pass

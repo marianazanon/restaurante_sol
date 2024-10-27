@@ -52,7 +52,7 @@ class VendaAdmin(admin.ModelAdmin):
 
 class ReajusteAdmin(admin.ModelAdmin):
     form = ReajusteForm
-    list_display = ['pct_reajuste', 'cargo', 'created_at']
+    list_display = ['pct_reajuste', 'prato']
 
     def save_model(self, request, obj, form, change):
         pct_reajuste = form.cleaned_data.get('pct_reajuste')
@@ -83,7 +83,6 @@ class ReajusteAdmin(admin.ModelAdmin):
 
 class SorteioAdmin(admin.ModelAdmin):
     form = SorteioForm
-    list_display = ['cliente', 'created_at']
 
     def save_model(self, request, obj, form, change):
         with connection.cursor() as cursor:
