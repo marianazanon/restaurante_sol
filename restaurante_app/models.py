@@ -45,17 +45,17 @@ class Fornecedor(models.Model):
         nome = models.CharField(max_length=100)
         estado = models.CharField(max_length=2)
 
-        class Meta:
-            brazilian_states = [
-            'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 
-            'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 
-            'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
-        ]
+    BRAZILIAN_STATES = [
+        'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+        'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
+        'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+    ]
 
+        class Meta:
             constraints = [
                 models.CheckConstraint(
                     name='check_state',
-                    check=Q(estado__in=brazilian_states),
+                    check=Q(estado__in=BRAZILIAN_STATES),
                     violation_error_message='Estado inválido, escolha um estado brasileiro.'
                 )
             ]
