@@ -23,6 +23,5 @@ BEGIN
         INSERT INTO restaurante_app_eventlog_message (message, created_at)
         VALUES (msg, NOW());
 
-        SIGNAL SQLSTATE '45000' 
     END IF;
 END
