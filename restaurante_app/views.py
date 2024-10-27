@@ -36,7 +36,7 @@ def total_revenue_by_dish_view(request):
     context = {
         'results': results,
     }
-    return render(request, 'restaurante_app/total_revenue_by_dish.html', context)
+    return render(request, 'restaurante_app/total_de_receita_por_prato.html', context)
 
 def total_revenue_by_supplier_view(request):
     with connection.cursor() as cursor:
@@ -53,7 +53,7 @@ def total_revenue_by_supplier_view(request):
     context = {
         'results': results,
     }
-    return render(request, 'restaurante_app/total_revenue_by_supplier.html', context)
+    return render(request, 'restaurante_app/total_de_receita_por_fornecedor.html', context)
 
 def top_clients_view(request):
     with connection.cursor() as cursor:
@@ -70,4 +70,4 @@ def top_clients_view(request):
     context = {
         'results': results,
     }
-    return render(request, 'restaurante_app/top_clients.html', context)
+    return render(request, 'restaurante_app/melhores_clientes.html', context)

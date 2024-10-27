@@ -3,10 +3,10 @@ from django import forms
 from django.db import connection
 from django.urls import path
 from django.http import HttpRequest
-from .models import Cliente, Prato, Venda, Fornecedor, Usos, Ingredientes
-from .views import total_revenue_by_vendor_view, monthly_sales_by_product_view, top_clients_view, estatisticas_view
-from .forms import ReajusteForm, SorteioForm  # Placeholder forms for models that don't exist yet
- 
+from .models import Cliente, Prato, Venda, Fornecedor, Usos, Ingredientes, Reajuste, Sorteio
+from .views import estatisticas, melhores_clientes, total_de_receita_por_fornecedor, total_de_receita_por_prato
+from .forms import ReajusteForm, SorteioForm
+
 class PratoAdmin(admin.ModelAdmin):
     list_display = ('nome', 'valor', 'descricao', 'disponivel')
     search_fields = ('nome',)
@@ -20,7 +20,7 @@ class PratoAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='funcionario').exists():
             return False
         return super().has_change_permission(request, obj)
-   
+
 class ClienteAdmin(admin.ModelAdmin):
     list_display = ('nome', 'idade', 'sexo', 'nascimento')
     search_fields = ('nome',)
@@ -34,11 +34,10 @@ class ClienteAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='funcionario').exists():
             return False
         return super().has_change_permission(request, obj)
- 
- 
+
 class VendaAdmin(admin.ModelAdmin):
     list_display = ('prato', 'cliente', 'quantidade', 'valor', 'dia', 'hora')
-    search_fields = ('cliente_nome', 'prato_nome')
+    search_fields = ('cliente__nome', 'prato__nome')
     exclude = ('valor',)
 
     def has_delete_permission(self, request, obj=None):
@@ -51,17 +50,14 @@ class VendaAdmin(admin.ModelAdmin):
             return False
         return super().has_change_permission(request, obj)
 
-# Placeholder class for Reajuste model (not implemented yet)
 class ReajusteAdmin(admin.ModelAdmin):
     form = ReajusteForm
-    list_display = ['pct_reajuste', 'cargo']
+    list_display = ['pct_reajuste', 'cargo', 'created_at']
 
     def save_model(self, request, obj, form, change):
         pct_reajuste = form.cleaned_data.get('pct_reajuste')
-        cargo = form.cleaned_data.get('cargo')
-
         with connection.cursor() as cursor:
-            cursor.callproc('Reajuste', [pct_reajuste, cargo])
+            cursor.callproc('reajuste', [pct_reajuste])
 
         obj.pk = None
         super().save_model(request, obj, form, change)
@@ -87,10 +83,11 @@ class ReajusteAdmin(admin.ModelAdmin):
 
 class SorteioAdmin(admin.ModelAdmin):
     form = SorteioForm
+    list_display = ['cliente', 'created_at']
 
     def save_model(self, request, obj, form, change):
         with connection.cursor() as cursor:
-            cursor.callproc('Sorteio')
+            cursor.callproc('sorteio')
 
         obj.pk = None
         super().save_model(request, obj, form, change)
@@ -113,4 +110,27 @@ class SorteioAdmin(admin.ModelAdmin):
                 'add': self.has_add_permission(request),
             }
         return {}
- 
+
+class CustomAdminSite(admin.AdminSite):
+    site_header = "Administração Restaurante Sol"
+   
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('total-revenue-by-supplier/', total_revenue_by_supplier_view, name='total_de_receita_por_fornecedor'),
+            path('total-revenue-by-dish/', total_revenue_by_dish_view, name='total_de_receita_por_prato'),
+            path('top-clients/', top_clients_view, name='melhores_clientes'),
+            path('estatisticas/', estatisticas_view, name='estatisticas'),
+        ]
+        return my_urls + urls
+
+admin_site = CustomAdminSite(name='custom_admin')
+
+admin_site.register(Cliente, ClienteAdmin)
+admin_site.register(Prato, PratoAdmin)
+admin_site.register(Venda, VendaAdmin)
+admin_site.register(Fornecedor)
+admin_site.register(Usos)
+admin_site.register(Ingredientes)
+admin_site.register(Reajuste, ReajusteAdmin)
+admin_site.register(Sorteio, SorteioAdmin)
