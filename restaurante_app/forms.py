@@ -14,10 +14,10 @@ class ReajusteForm(forms.ModelForm):
 
     def save(self, commit=True):
         pct_reajuste = self.cleaned_data.get('pct_reajuste')
-        cargo = self.cleaned_data.get('cargo')
+        prato = self.cleaned_data.get('prato')
 
         with connection.cursor() as cursor:
-            cursor.callproc('Reajuste', [pct_reajuste])
+            cursor.callproc('reajuste', [pct_reajuste])
 
         return super().save(commit=commit)
 
@@ -28,6 +28,6 @@ class SorteioForm(forms.ModelForm):
 
     def save(self, commit=True):
         with connection.cursor() as cursor:
-            cursor.callproc('Sorteio')
+            cursor.callproc('sorteio')
 
         return super().save(commit=commit)
