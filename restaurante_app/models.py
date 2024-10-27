@@ -4,6 +4,12 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.utils import timezone
 
+BRAZILIAN_STATES = [
+    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+    'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
+    'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+]
+
 class Cliente(models.Model):
 
     nome = models.CharField(max_length=100)
@@ -44,12 +50,6 @@ class Fornecedor(models.Model):
         
         nome = models.CharField(max_length=100)
         estado = models.CharField(max_length=2)
-
-        BRAZILIAN_STATES = [
-            'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
-            'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
-            'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
-        ]
 
         class Meta:
             constraints = [
