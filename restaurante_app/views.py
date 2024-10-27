@@ -4,13 +4,13 @@ from .models import Cliente, Venda, Prato
  
 def get_estatisticas():
     with connection.cursor() as cursor:
-        cursor.callproc('Estatisticas')
+        cursor.callproc('estatisticas')
         stats = cursor.fetchall()
     return stats
  
 def estatisticas_view(request):
     stats = get_estatisticas()
-    
+
     context = {
         'most_sold_dish': stats[0][0],
         'most_sold_dish_revenue': stats[1][0],
