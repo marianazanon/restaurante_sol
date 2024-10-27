@@ -5,13 +5,21 @@ from .models import Cliente, Venda, Prato
 def get_estatisticas():
     with connection.cursor() as cursor:
         cursor.callproc('Estatisticas')
-        results = cursor.fetchall()
-    return results
+        stats = cursor.fetchall()
+    return stats
  
 def estatisticas_view(request):
     stats = get_estatisticas()
+    
     context = {
-        'stats': stats,
+        'most_sold_dish': stats[0][0],
+        'most_sold_dish_revenue': stats[1][0],
+        'most_sold_dish_best_month': stats[2][0],
+        'most_sold_dish_worst_month': stats[3][0],
+        'least_sold_dish': stats[4][0],
+        'least_sold_dish_revenue': stats[5][0],
+        'least_sold_dish_best_month': stats[6][0],
+        'least_sold_dish_worst_month': stats[7][0],
     }
     return render(request, 'restaurante_app/estatisticas.html', context)
 
