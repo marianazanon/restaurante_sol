@@ -4,7 +4,7 @@ from .models import Venda, Reajuste, Sorteio
 class VendaForm(forms.ModelForm):
     class Meta:
         model = Venda
-        fields = ['produto', 'vendedor', 'cliente', 'quantidade']
+        fields = ['prato', 'cliente', 'quantidade']
 
 class ReajusteForm(forms.ModelForm):
     class Meta:
