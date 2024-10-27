@@ -4,7 +4,7 @@ from django.db import connection
 from django.urls import path
 from django.http import HttpRequest
 from .models import Cliente, Prato, Venda, Fornecedor, Usos, Ingredientes, Reajuste, Sorteio
-from .views import estatisticas, melhores_clientes, total_de_receita_por_fornecedor, total_de_receita_por_prato
+from .views import estatisticas_view, total_revenue_by_dish_view, total_revenue_by_supplier_view, top_clients_view
 from .forms import ReajusteForm, SorteioForm
 
 class PratoAdmin(admin.ModelAdmin):
