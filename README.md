@@ -57,7 +57,7 @@ Siga os passos abaixo para configurar e executar a aplicação:
    No Windows:
 
    ```sh
-   cd gerenciador_de_vendas
+   cd gerenciador_de_restaurante
    docker-compose exec web sh
    python manage.py makemigrations restaurante_app
    python manage.py migrate
