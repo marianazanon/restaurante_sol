@@ -118,6 +118,11 @@ class SorteioAdmin(admin.ModelAdmin):
             }
         return {}
 
+class IngredienteAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'data_fabricacao', 'data_validade', 'quantidade', 'observacao')
+    search_fields = ('nome',)
+    list_filter = ('data_validade',)
+
 class CustomAdminSite(admin.AdminSite):
     site_header = "Administração Restaurante Sol"
    
