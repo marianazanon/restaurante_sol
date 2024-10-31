@@ -83,7 +83,7 @@ class Ingredientes(models.Model):
     def __str__(self):
         return self.nome
 
-class Usos(models.Model):
+class Uso(models.Model):
     
     prato = models.ForeignKey(Prato, on_delete=models.CASCADE)
     ingrediente = models.ForeignKey(Ingredientes, on_delete=models.CASCADE)

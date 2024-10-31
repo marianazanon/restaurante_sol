@@ -4,6 +4,7 @@ from django.core.management import call_command
 
 class RestauranteAppConfig(AppConfig):
     name = 'restaurante_app'
+    verbose_name = 'Restaurante Sol'
 
     def ready(self):
         post_migrate.connect(create_users_and_groups, sender=self)

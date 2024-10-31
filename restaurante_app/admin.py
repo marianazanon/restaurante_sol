@@ -1,14 +1,14 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django import forms
 from django.db import connection
 from django.urls import path
 from django.http import HttpRequest
-from .models import Cliente, Prato, Venda, Fornecedor, Usos, Ingredientes, Reajuste, Sorteio
+from .models import Cliente, Prato, Venda, Fornecedor, Usos, Ingredientes, Reajuste, Sorteio, EventLog_Message
 from .views import estatisticas_view, total_revenue_by_dish_view, monthly_sales_by_dish_view, top_clients_view
 from .forms import ReajusteForm, SorteioForm
 
 class PratoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'valor', 'descricao', 'disponivel', 'pontos')
+    list_display = ('nome', 'valor', 'descricao', 'disponivel')
     search_fields = ('nome',)
 
     def has_delete_permission(self, request, obj=None):
@@ -22,7 +22,7 @@ class PratoAdmin(admin.ModelAdmin):
         return super().has_change_permission(request, obj)
 
 class ClienteAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'idade', 'sexo', 'nascimento')
+    list_display = ('nome', 'idade', 'sexo', 'nascimento', 'pontos')
     search_fields = ('nome',)
 
     def has_delete_permission(self, request, obj=None):
@@ -84,9 +84,17 @@ class ReajusteAdmin(admin.ModelAdmin):
 class SorteioAdmin(admin.ModelAdmin):
     form = SorteioForm
 
+
     def save_model(self, request, obj, form, change):
         with connection.cursor() as cursor:
             cursor.callproc('sorteio')
+
+        latest_log = EventLog_Message.objects.order_by('-created_at').first()
+        
+        if latest_log:
+            messages.success(request, latest_log.message)
+        else:
+            messages.info(request, "No log message available for this sorteio.")
 
         obj.pk = None
         super().save_model(request, obj, form, change)

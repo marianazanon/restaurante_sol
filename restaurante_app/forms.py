@@ -1,6 +1,6 @@
 from django import forms
 from django.db import connection
-from .models import Venda, Reajuste, Sorteio
+from .models import Venda, Reajuste, Sorteio, Prato
 
 class VendaForm(forms.ModelForm):
     class Meta:
