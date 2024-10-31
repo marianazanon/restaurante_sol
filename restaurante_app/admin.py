@@ -3,7 +3,7 @@ from django import forms
 from django.db import connection
 from django.urls import path
 from django.http import HttpRequest
-from .models import Cliente, Prato, Venda, Fornecedor, Usos, Ingredientes, Reajuste, Sorteio, EventLog_Message
+from .models import Cliente, Prato, Venda, Fornecedor, Uso, Ingredientes, Reajuste, Sorteio, EventLog_Message
 from .views import estatisticas_view, total_revenue_by_dish_view, monthly_sales_by_dish_view, top_clients_view
 from .forms import ReajusteForm, SorteioForm
 
@@ -137,7 +137,7 @@ admin_site.register(Cliente, ClienteAdmin)
 admin_site.register(Prato, PratoAdmin)
 admin_site.register(Venda, VendaAdmin)
 admin_site.register(Fornecedor)
-admin_site.register(Usos)
+admin_site.register(Uso)
 admin_site.register(Ingredientes)
 admin_site.register(Reajuste, ReajusteAdmin)
 admin_site.register(Sorteio, SorteioAdmin)
