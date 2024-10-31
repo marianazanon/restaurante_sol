@@ -12,4 +12,4 @@ BEGIN
     WHERE id = random_cliente_id;
 
     SELECT nome FROM restaurante_app_cliente WHERE id = random_cliente_id;
-END
+END;

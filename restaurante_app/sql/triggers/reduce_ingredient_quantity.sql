@@ -8,4 +8,4 @@ BEGIN
     JOIN restaurante_app_usos AS uso ON uso.ingrediente_id = ing.id
     SET ing.quantidade = ing.quantidade - 1
     WHERE uso.prato_id = NEW.prato_id;
-END
+END;

@@ -89,7 +89,7 @@ class Command(BaseCommand):
             'restaurante_app/sql/insert_fornecedor.sql',
             'restaurante_app/sql/insert_ingredientes.sql',
             'restaurante_app/sql/insert_pratos.sql',
-            'restaurante_app/sql/populate_usos.sql',
+            'restaurante_app/sql/insert_usos.sql',
         ]
         
         with connection.cursor() as cursor:

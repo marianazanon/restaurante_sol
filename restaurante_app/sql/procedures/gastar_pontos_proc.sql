@@ -1,4 +1,4 @@
-CREATE PROCEDURE Gastar_pontos(IN cliente_id INT, IN prato_id INT)
+CREATE PROCEDURE gastar_pontos(IN cliente_id INT, IN prato_id INT)
 BEGIN
     DECLARE prato_valor DECIMAL(10, 2);
     DECLARE cliente_pontos INT;
@@ -24,4 +24,4 @@ BEGIN
         VALUES (msg, NOW());
 
     END IF;
-END
+END;

@@ -14,6 +14,10 @@ class Command(BaseCommand):
         ]
 
         with connection.cursor() as cursor:
+            cursor.execute("DROP PROCEDURE IF EXISTS reajuste")
+            cursor.execute("DROP PROCEDURE IF EXISTS sorteio")
+            cursor.execute("DROP PROCEDURE IF EXISTS gastar_pontos")
+            cursor.execute("DROP PROCEDURE IF EXISTS estatisticas")
 
             for sql_file in sql_files:
                 with open(sql_file, 'r') as file:

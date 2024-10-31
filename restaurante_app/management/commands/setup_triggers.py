@@ -14,6 +14,10 @@ class Command(BaseCommand):
         ]
 
         with connection.cursor() as cursor:
+            cursor.execute("DROP TRIGGER IF EXISTS add_points_after_sale")
+            cursor.execute("DROP TRIGGER IF EXISTS make_dish_unavaiable_expires")
+            cursor.execute("DROP TRIGGER IF EXISTS prevent_unavailable_prato_purchase")
+            cursor.execute("DROP TRIGGER IF EXISTS reduce_ingredient_quantity_after_sale")
 
             for sql_file in sql_files:
                 with open(sql_file, 'r') as file:
