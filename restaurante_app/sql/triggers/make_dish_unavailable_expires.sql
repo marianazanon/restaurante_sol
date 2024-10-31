@@ -8,7 +8,7 @@ BEGIN
         SET disponivel = FALSE
         WHERE id IN (
             SELECT prato_id
-            FROM restaurante_app_usos
+            FROM restaurante_app_uso
             WHERE ingrediente_id = NEW.id
         );
     END IF;

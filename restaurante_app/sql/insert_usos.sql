@@ -1,4 +1,4 @@
-INSERT INTO restaurante_app_usos (prato_id, ingrediente_id) VALUES
+INSERT INTO restaurante_app_uso (prato_id, ingrediente_id) VALUES
 -- Moqueca de Camarão
 (1, 1),  -- Camarão
 (1, 10), -- Ervas Frescas
