@@ -9,17 +9,12 @@ def get_estatisticas():
     return stats
  
 def estatisticas_view(request):
-    stats = get_estatisticas()
-
+    with connection.cursor() as cursor:
+        cursor.callproc('Estatisticas')
+        results = cursor.fetchall()
+    
     context = {
-        'most_sold_dish': stats[0][0],
-        'most_sold_dish_revenue': stats[1][0],
-        'most_sold_dish_best_month': stats[2][0],
-        'most_sold_dish_worst_month': stats[3][0],
-        'least_sold_dish': stats[4][0],
-        'least_sold_dish_revenue': stats[5][0],
-        'least_sold_dish_best_month': stats[6][0],
-        'least_sold_dish_worst_month': stats[7][0],
+        'results': results,
     }
     return render(request, 'restaurante_app/estatisticas.html', context)
 
@@ -38,22 +33,21 @@ def total_revenue_by_dish_view(request):
     }
     return render(request, 'restaurante_app/total_de_receita_por_prato.html', context)
 
-def total_revenue_by_supplier_view(request):
+def monthly_sales_by_dish_view(request):
     with connection.cursor() as cursor:
         cursor.execute("""
-            SELECT f.nome AS fornecedor, SUM(v.valor) AS total_revenue
+            SELECT p.nome AS prato, DATE_FORMAT(v.dia, '%Y-%m') AS mes, SUM(v.valor) AS total_sales
             FROM restaurante_app_venda v
             JOIN restaurante_app_prato p ON v.prato_id = p.id
-            JOIN restaurante_app_fornecedor f ON p.fornecedor_id = f.id
-            GROUP BY f.nome
-            ORDER BY total_revenue DESC;
+            GROUP BY p.nome, mes
+            ORDER BY p.nome, mes;
         """)
         results = cursor.fetchall()
     
     context = {
         'results': results,
     }
-    return render(request, 'restaurante_app/total_de_receita_por_fornecedor.html', context)
+    return render(request, 'restaurante_app/vendas_mensal_de_pratos.html', context)
 
 def top_clients_view(request):
     with connection.cursor() as cursor:

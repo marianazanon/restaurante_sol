@@ -153,7 +153,7 @@ JAZZMIN_SETTINGS = {
     ############
 
     "topmenu_links": [
-        {"name": "Total de receita dos fornecedores", "url": "admin:total_de_receita_por_fornecedor"},
+        {"name": "Venda Mensal Dos Pratos", "url": "admin:vendas_mensal_de_pratos"},
         {"name": "Total de receita dos pratos", "url": "admin:total_de_receita_por_prato"},
         {"name": "Melhores Clientes", "url": "admin:melhores_clientes"},
         {"name": "Estátisticas de Venda", "url": "admin:estatisticas"},

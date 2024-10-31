@@ -1,50 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estatísticas de Vendas</title>
- 
+
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'restaurante_app/style.css' %}">
 </head>
- 
+
 <body>
     <h1 class="site-header">Estatísticas de Vendas</h1>
- 
+
     <table class="table table-with-shadow">
         <thead>
             <tr>
-                <th>Prato Mais Vendido</th>
-                <th>Valor Ganho com Prato Mais Vendido</th>
-                <th>Mês de Maior Venda do Prato Mais Vendido</th>
-                <th>Mês de Menor Venda do Prato Mais Vendido</th>
-                <th>Prato Menos Vendido</th>
-                <th>Valor Ganho com Prato Menos Vendido</th>
-                <th>Mês de Maior Venda do Prato Menos Vendido</th>
-                <th>Mês de Menor Venda do Prato Menos Vendido</th>
+                <th>Descrição</th>
+                <th>Métrica</th>
             </tr>
         </thead>
         <tbody>
-            {% if most_sold_dish %}
+            {% if results %}
+            {% for result in results %}
             <tr>
-                <td>{{ most_sold_dish }}</td>
-                <td>{{ most_sold_dish_revenue }}</td>
-                <td>{{ most_sold_dish_best_month }}</td>
-                <td>{{ most_sold_dish_worst_month }}</td>
-                <td>{{ least_sold_dish }}</td>
-                <td>{{ least_sold_dish_revenue }}</td>
-                <td>{{ least_sold_dish_best_month }}</td>
-                <td>{{ least_sold_dish_worst_month }}</td>
+                <td>{{ result.1 }}</td>
+                <td>{{ result.0 }}</td>
             </tr>
+            {% endfor %}
             {% else %}
             <tr>
-                <td colspan="8">No statistics available</td>
+                <td colspan="2">No data available</td>
             </tr>
             {% endif %}
         </tbody>
     </table>
 </body>
- 
+
 </html>

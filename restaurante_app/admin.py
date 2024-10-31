@@ -4,7 +4,7 @@ from django.db import connection
 from django.urls import path
 from django.http import HttpRequest
 from .models import Cliente, Prato, Venda, Fornecedor, Usos, Ingredientes, Reajuste, Sorteio
-from .views import estatisticas_view, total_revenue_by_dish_view, total_revenue_by_supplier_view, top_clients_view
+from .views import estatisticas_view, total_revenue_by_dish_view, monthly_sales_by_dish_view, top_clients_view
 from .forms import ReajusteForm, SorteioForm
 
 class PratoAdmin(admin.ModelAdmin):
@@ -116,7 +116,7 @@ class CustomAdminSite(admin.AdminSite):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path('total-revenue-by-supplier/', total_revenue_by_supplier_view, name='total_de_receita_por_fornecedor'),
+            path('total-revenue-by-supplier/', monthly_sales_by_dish_view, name='vendas_mensal_de_pratos'),
             path('total-revenue-by-dish/', total_revenue_by_dish_view, name='total_de_receita_por_prato'),
             path('top-clients/', top_clients_view, name='melhores_clientes'),
             path('estatisticas/', estatisticas_view, name='estatisticas'),

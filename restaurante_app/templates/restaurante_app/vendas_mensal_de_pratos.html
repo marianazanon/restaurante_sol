@@ -4,19 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Total Receita por Fornecedor</title>
+    <title>Vendas Mensais por Prato</title>
 
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'restaurante_app/style.css' %}">
 </head>
 
 <body>
-    <h1 class="site-header">Total Receita por Fornecedor</h1>
+    <h1 class="site-header">Vendas Mensais por Prato</h1>
 
     <table class="table table-with-shadow">
         <thead>
             <tr>
-                <th>Fornecedor</th>
+                <th>Prato</th>
+                <th>Mês</th>
                 <th>Receita Total</th>
             </tr>
         </thead>
@@ -26,11 +27,12 @@
             <tr>
                 <td>{{ result.0 }}</td>
                 <td>{{ result.1 }}</td>
+                <td>{{ result.2 }}</td>
             </tr>
             {% endfor %}
             {% else %}
             <tr>
-                <td colspan="2">No data available</td>
+                <td colspan="3">No data available</td>
             </tr>
             {% endif %}
         </tbody>
