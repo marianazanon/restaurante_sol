@@ -1,4 +1,4 @@
-# Sistema de E-commerce Paladins
+# Restaurante Sol
 
 <img src="/restaurante_app/static/restaurante_app/img/logo.png" alt="Logo" width="200"/>
 
