@@ -8,7 +8,7 @@ from .views import estatisticas_view, total_revenue_by_dish_view, monthly_sales_
 from .forms import ReajusteForm, SorteioForm
 
 class PratoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'valor', 'descricao', 'disponivel')
+    list_display = ('nome', 'valor', 'descricao', 'disponivel', 'pontos')
     search_fields = ('nome',)
 
     def has_delete_permission(self, request, obj=None):

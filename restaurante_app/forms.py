@@ -8,6 +8,8 @@ class VendaForm(forms.ModelForm):
         fields = ['prato', 'cliente', 'quantidade']
 
 class ReajusteForm(forms.ModelForm):
+    prato = forms.ModelChoiceField(queryset=Prato.objects.all(), empty_label="Selecione um prato")
+
     class Meta:
         model = Reajuste
         fields = ['pct_reajuste', 'prato']
