@@ -123,6 +123,10 @@ class IngredienteAdmin(admin.ModelAdmin):
     search_fields = ('nome',)
     list_filter = ('data_validade',)
 
+class FornecedorAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'estado')
+    search_fields = ('nome',)
+
 class CustomAdminSite(admin.AdminSite):
     site_header = "Administração Restaurante Sol"
    
@@ -141,8 +145,8 @@ admin_site = CustomAdminSite(name='custom_admin')
 admin_site.register(Cliente, ClienteAdmin)
 admin_site.register(Prato, PratoAdmin)
 admin_site.register(Venda, VendaAdmin)
-admin_site.register(Fornecedor)
+admin_site.register(Fornecedor, FornecedorAdmin)
 admin_site.register(Uso)
-admin_site.register(Ingredientes)
+admin_site.register(Ingredientes, IngredienteAdmin)
 admin_site.register(Reajuste, ReajusteAdmin)
 admin_site.register(Sorteio, SorteioAdmin)
