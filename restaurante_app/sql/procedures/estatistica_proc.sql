@@ -1,4 +1,4 @@
-REATE PROCEDURE estatisticas()
+CREATE PROCEDURE estatisticas()
 BEGIN
     DECLARE most_sold_dish_id INT;
     DECLARE least_sold_dish_id INT;

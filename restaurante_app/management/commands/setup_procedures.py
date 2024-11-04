@@ -7,11 +7,17 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         sql_files = [
-
+            'restaurante_app/sql/procedures/estatistica_proc.sql',
+            'restaurante_app/sql/procedures/gastar_pontos_proc.sql',
+            'restaurante_app/sql/procedures/reajuste_proc.sql',
+            'restaurante_app/sql/procedures/sorteio_proc.sql',
         ]
 
         with connection.cursor() as cursor:
-
+            cursor.execute("DROP PROCEDURE IF EXISTS reajuste")
+            cursor.execute("DROP PROCEDURE IF EXISTS sorteio")
+            cursor.execute("DROP PROCEDURE IF EXISTS gastar_pontos")
+            cursor.execute("DROP PROCEDURE IF EXISTS estatisticas")
 
             for sql_file in sql_files:
                 with open(sql_file, 'r') as file:

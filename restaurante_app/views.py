@@ -65,5 +65,3 @@ def top_clients_view(request):
         'results': results,
     }
     return render(request, 'restaurante_app/melhores_clientes.html', context)
-
-
