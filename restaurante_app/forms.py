@@ -1,11 +1,33 @@
 from django import forms
-from django.db import connection
+from django.db import connection, OperationalError, transaction
 from .models import Venda, Reajuste, Sorteio, Prato
 
 class VendaForm(forms.ModelForm):
     class Meta:
         model = Venda
         fields = ['prato', 'cliente', 'quantidade']
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        prato = cleaned_data.get('prato')
+        if prato and not prato.disponivel:
+            raise forms.ValidationError('Compra não permitida: Prato indisponível.')
+        return cleaned_data
+
+    def save(self, commit=True):
+        try:
+            with transaction.atomic():
+                return super().save(commit=commit)
+        except OperationalError as e:
+            transaction.set_rollback(True)
+            error_code = e.args[0]
+            error_message = e.args[1]
+            if error_code == 1644:
+                self.add_error(None, error_message)
+                raise forms.ValidationError(error_message)
+            else:
+                self.add_error(None, f"Erro ao salvar a venda: {error_message}")
+                raise forms.ValidationError(f"Erro ao salvar a venda: {error_message}")
 
 class ReajusteForm(forms.ModelForm):
     prato = forms.ModelChoiceField(queryset=Prato.objects.all(), empty_label="Selecione um prato")

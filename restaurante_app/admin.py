@@ -5,7 +5,7 @@ from django.urls import path
 from django.http import HttpRequest
 from .models import Cliente, Prato, Venda, Fornecedor, Uso, Ingredientes, Reajuste, Sorteio, EventLog_Message
 from .views import estatisticas_view, total_revenue_by_dish_view, monthly_sales_by_dish_view, top_clients_view
-from .forms import ReajusteForm, SorteioForm
+from .forms import ReajusteForm, SorteioForm, VendaForm
 
 class PratoAdmin(admin.ModelAdmin):
     list_display = ('nome', 'valor', 'descricao', 'disponivel')
@@ -34,19 +34,12 @@ class ClienteAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='funcionario').exists():
             return False
         return super().has_change_permission(request, obj)
+
 class VendaAdmin(admin.ModelAdmin):
+    form = VendaForm
     list_display = ('prato', 'cliente', 'quantidade', 'valor', 'dia', 'hora')
     search_fields = ('cliente__nome', 'prato__nome')
     exclude = ('valor',)
-
-    def save_model(self, request, obj, form, change):
-        try:
-            super().save_model(request, obj, form, change)
-        except IntegrityError as e:
-            if '45000' in str(e):
-                messages.error(request, "Compra não permitida: Prato indisponível.")
-            else:
-                messages.error(request, f"Erro ao salvar a venda: {e}")
 
     def has_delete_permission(self, request, obj=None):
         if request.user.groups.filter(name='funcionario').exists():
