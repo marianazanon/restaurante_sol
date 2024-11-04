@@ -4,6 +4,12 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.utils import timezone
 
+BRAZILIAN_STATES = [
+    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+    'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
+    'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+]
+
 class Cliente(models.Model):
 
     nome = models.CharField(max_length=100)
@@ -46,16 +52,10 @@ class Fornecedor(models.Model):
         estado = models.CharField(max_length=2)
 
         class Meta:
-            brazilian_states = [
-            'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 
-            'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 
-            'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
-        ]
-
             constraints = [
                 models.CheckConstraint(
                     name='check_state',
-                    check=Q(estado__in=brazilian_states),
+                    check=Q(estado__in=BRAZILIAN_STATES),
                     violation_error_message='Estado inválido, escolha um estado brasileiro.'
                 )
             ]
@@ -83,7 +83,7 @@ class Ingredientes(models.Model):
     def __str__(self):
         return self.nome
 
-class Usos(models.Model):
+class Uso(models.Model):
     
     prato = models.ForeignKey(Prato, on_delete=models.CASCADE)
     ingrediente = models.ForeignKey(Ingredientes, on_delete=models.CASCADE)
@@ -100,16 +100,23 @@ class EventLog_Message(models.Model):
 
 class Reajuste(models.Model):
     pct_reajuste = models.DecimalField(max_digits=5, decimal_places=2)
-    cargo = models.CharField(max_length=100)
+    prato = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Reajuste {self.pct_reajuste}% for {self.cargo}"
+        return f"Reajuste {self.pct_reajuste}% for {self.prato}"
 
 class Sorteio(models.Model):
-    pass
+    cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True, blank=True, related_name='sorteios')
+    created_at = models.DateTimeField(default=timezone.now)
+
+    @property
+    def latest_message(self):
+        from .models import EventLog_Message 
+        log = EventLog_Message.objects.filter(message__contains=self.cliente.nome).order_by('-created_at').first()
+        return log.message if log else "No message available"
 
     def __str__(self):
-        return "Sorteio"
+        return f"Sorteio for {self.cliente.nome}" if self.cliente else "Sorteio"
 
 class Venda(models.Model):
 
@@ -124,4 +131,4 @@ class Venda(models.Model):
 def calculate_valor(sender, instance, **kwargs):
     instance.valor = instance.prato.valor * instance.quantidade
     pontos = instance.cliente.adicionar_pontos(instance.valor)
-    print(f"Cliente {instance.cliente.nome} ganhou {pontos} pontos na compra de {instance.prato.nome}.")
+    return f"Cliente {instance.cliente.nome} ganhou {pontos} pontos na compra de {instance.prato.nome}."

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
-from restaurante_app.models import Cliente, Venda, Prato, Fornecedor, Usos, Ingredientes
+from restaurante_app.models import Cliente, Venda, Prato, Fornecedor, Uso, Ingredientes
 from django.core.management import call_command
 from django.db import connection
 from decouple import config
@@ -21,7 +21,7 @@ class Command(BaseCommand):
                 ContentType.objects.get_for_model(Cliente),
                 ContentType.objects.get_for_model(Prato),
                 ContentType.objects.get_for_model(Fornecedor),
-                ContentType.objects.get_for_model(Usos),
+                ContentType.objects.get_for_model(Uso),
                 ContentType.objects.get_for_model(Venda),
                 ContentType.objects.get_for_model(Ingredientes),
             ]
@@ -89,7 +89,8 @@ class Command(BaseCommand):
             'restaurante_app/sql/insert_fornecedor.sql',
             'restaurante_app/sql/insert_ingredientes.sql',
             'restaurante_app/sql/insert_pratos.sql',
-            'restaurante_app/sql/populate_usos.sql',
+            'restaurante_app/sql/insert_usos.sql',
+            'restaurante_app/sql/insert_vendas.sql',
         ]
         
         with connection.cursor() as cursor:
