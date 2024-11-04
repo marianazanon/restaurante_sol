@@ -16,7 +16,7 @@ services:
 
   web:
     build: .
-    command: gunicorn --bind 0.0.0.0:9000 gerenciador_de_vendas.wsgi:application
+    command: gunicorn --bind 0.0.0.0:9000 gerenciador_de_restaurante.wsgi:application
     volumes:
       - static_volume:/app/web/staticfiles
     ports:
