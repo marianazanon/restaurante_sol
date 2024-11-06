@@ -10,7 +10,7 @@ def get_estatisticas():
  
 def estatisticas_view(request):
     with connection.cursor() as cursor:
-        cursor.callproc('Estatisticas')
+        cursor.callproc('estatisticas')
         results = cursor.fetchall()
     
     context = {
