@@ -16,7 +16,7 @@
 
  ## Grupo:
  
- ### Mariana Zanon, Luiz Claudio, Vitoria e 
+ ### Mariana Zanon, Gabriel Reis Batista, Luiz Cláudio Brito e Maria Vitória Moura Paiva
 
 ## Pré-requisitos
 
